@@ -37,9 +37,10 @@ class Queue
     int capacity;
     Node *head;
     Node *tail;
+    int size;
 
 public:
-    Queue(int capacity) : capacity(capacity), head(nullptr), tail(nullptr) {}
+    Queue(int capacity) : capacity(capacity), head(nullptr), tail(nullptr), size(0) {}
     void push_back(Node *node); // add a new node at the end
     Node *pop();                // retrive the head node
     void clear();               // clear the queue
@@ -75,17 +76,11 @@ void Queue::push_back(Node *node)
     {
         head = node;
     }
+    size++;
 }
 
 int Queue::getSize() const
 {
-    int size = 0;
-    Node *temp = head;
-    while (temp != nullptr)
-    {
-        size++;
-        temp = temp->getNext();
-    }
     return size;
 }
 
@@ -107,12 +102,10 @@ Node *Queue::pop()
     {
         tail = nullptr;
     }
-    // temp->copyNode(head);
-    // head->copyNode(head->getNext());
-    // temp = head;
-    // head = head->getNext(); // expression must be a modifiable lvalueC/C++(137)
-
-    return temp;
+    int value = temp->getVal();
+    delete temp;
+    size--;
+    return new Node(value);
 }
 
 void Queue::clear()
